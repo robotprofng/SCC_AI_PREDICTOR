@@ -132,7 +132,7 @@ label_encoder = joblib.load("label_encoder.pkl")
 # HEADER
 # ============================================================
 
-st.title("🧬 SCC AI Predictor")
+st.title("ORAL SCC AI Predictor")
 
 st.subheader(
     "Machine Learning-Based Oral Cancer Risk Prediction"
@@ -162,7 +162,7 @@ st.divider()
 
 with st.sidebar:
 
-    st.header("🧬 About the AI Model")
+    st.header("About the AI Model")
 
     st.write(
         """
