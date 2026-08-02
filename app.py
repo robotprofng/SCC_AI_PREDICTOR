@@ -182,6 +182,7 @@ with col2:
         min_value=0.0,
         max_value=20.0,
         value=2.0
+    )
 
         # ==============================
 # PREDICTION SECTION
