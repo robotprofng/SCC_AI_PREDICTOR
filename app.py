@@ -310,4 +310,3 @@ st.divider()
 st.caption(
     "Developed for Oral Pathology AI Research | SCC Machine Learning Predictor"
 )
-    )
