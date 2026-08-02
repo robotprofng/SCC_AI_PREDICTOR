@@ -3,85 +3,202 @@ import pandas as pd
 import joblib
 
 
-# ==============================
+# ============================================================
 # PAGE CONFIGURATION
-# ==============================
+# ============================================================
 
 st.set_page_config(
     page_title="SCC AI Predictor",
-    page_icon="🦷",
+    page_icon="🧬",
     layout="wide"
 )
 
 
-# ==============================
+# ============================================================
+# CANCER AI THEME
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+
+    .stApp {
+        background-color: #160B0F;
+        color: #F8F5F2;
+    }
+
+
+    html, body, [class*="css"] {
+        color: #F8F5F2;
+        font-family: Arial, sans-serif;
+    }
+
+
+    h1 {
+        color: #E8B4B8 !important;
+        font-size: 42px !important;
+        font-weight: 800;
+    }
+
+
+    h2, h3 {
+        color: #F4C7C3 !important;
+    }
+
+
+    p {
+        color: #F8F5F2 !important;
+    }
+
+
+    section[data-testid="stSidebar"] {
+
+        background-color: #240E14;
+
+    }
+
+
+    section[data-testid="stSidebar"] * {
+
+        color: #F8F5F2 !important;
+
+    }
+
+
+    div[data-baseweb="select"] > div {
+
+        background-color: #2B151C;
+        color: white;
+
+    }
+
+
+    input {
+
+        background-color: #2B151C !important;
+        color: white !important;
+
+    }
+
+
+    .stButton > button {
+
+        background-color: #8B1E3F;
+        color: white;
+        width: 100%;
+        height: 3em;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: bold;
+
+    }
+
+
+    .stButton > button:hover {
+
+        background-color: #B8325A;
+
+    }
+
+
+    hr {
+
+        border-color: #8B1E3F;
+
+    }
+
+    </style>
+
+    """,
+
+    unsafe_allow_html=True
+)
+
+
+
+# ============================================================
 # LOAD MODEL FILES
-# ==============================
+# ============================================================
 
 model = joblib.load("SCC_best_model.pkl")
+
 feature_names = joblib.load("feature_names.pkl")
+
 label_encoder = joblib.load("label_encoder.pkl")
 
 
-# ==============================
-# HEADER
-# ==============================
 
-st.title("🦷 SCC AI PREDICTOR TOOL")
+# ============================================================
+# HEADER
+# ============================================================
+
+st.title("🧬 SCC AI Predictor")
 
 st.subheader(
-    "Artificial Intelligence Risk Prediction for Oral Squamous Cell Carcinoma Risk"
+    "Machine Learning-Based Oral Cancer Risk Prediction"
 )
+
 
 st.write(
     """
-This machine learning tool predicts oral cancer diagnosis patterns 
-using clinical and lifestyle-related features.
+    This artificial intelligence tool estimates oral cancer diagnosis
+    patterns using clinical and lifestyle-related factors.
 
-**For research and educational purposes only. 
-It is not a replacement for professional clinical diagnosis.**
-"""
+    **Developed for research and educational purposes.**
+
+    ⚠️ This tool does not replace clinical examination,
+    biopsy, imaging, or specialist diagnosis.
+    """
 )
 
 
 st.divider()
 
 
-# ==============================
+
+# ============================================================
 # SIDEBAR
-# ==============================
+# ============================================================
 
 with st.sidebar:
 
-    st.header("About the Model")
+    st.header("🧬 About the AI Model")
 
     st.write(
         """
-        This AI model was developed using machine learning 
-        and clinical risk factors associated with Oral Squamous 
-        Cell Carcinoma.
-        
-        Model:
+        **Model:**
         Logistic Regression
-        
-        Dataset:
-        SCC Clinical Dataset
+
+
+        **Application:**
+        Oral Squamous Cell Carcinoma (SCC)
+
+
+        **Input Variables:**
+        Clinical and lifestyle risk factors
+
+
+        **Purpose:**
+        Research and AI education
         """
     )
 
 
-# ==============================
-# INPUT FORM
-# ==============================
+
+# ============================================================
+# PATIENT INPUTS
+# ============================================================
 
 
-st.header("Patient Information")
+st.header("Patient Clinical Information")
 
 
 col1, col2 = st.columns(2)
 
 
+
 with col1:
+
 
     age = st.number_input(
         "Age",
@@ -133,7 +250,10 @@ with col1:
     )
 
 
+
+
 with col2:
+
 
     diet = st.selectbox(
         "Diet (Fruits & Vegetables Intake)",
@@ -184,16 +304,19 @@ with col2:
         value=2.0
     )
 
-        # ==============================
-# PREDICTION SECTION
-# ==============================
+
+
+# ============================================================
+# PREDICTION
+# ============================================================
 
 
 st.divider()
 
-if st.button("🔍 Predict Oral Cancer Risk"):
 
-    # Create input dataframe using ORIGINAL column names
+if st.button("🧬 Generate AI Risk Assessment"):
+
+
     patient_data = pd.DataFrame({
 
         "Age": [age],
@@ -231,82 +354,74 @@ if st.button("🔍 Predict Oral Cancer Risk"):
     })
 
 
-    # Apply same encoding used during training
     patient_encoded = pd.get_dummies(patient_data)
 
 
-    # Match training features exactly
     patient_encoded = patient_encoded.reindex(
         columns=feature_names,
         fill_value=0
     )
 
 
-    # Prediction
     prediction = model.predict(patient_encoded)
 
 
-    # Convert numerical prediction back to label
     diagnosis = label_encoder.inverse_transform(prediction)[0]
 
 
-    # Probability (if available)
-    probability = None
 
-    if hasattr(model, "predict_proba"):
+    st.header("AI Assessment Result")
 
-        probability = model.predict_proba(patient_encoded)[0]
-
-
-
-    # ==============================
-    # DISPLAY RESULT
-    # ==============================
-
-
-    st.subheader("AI Prediction Result")
 
 
     if diagnosis == "Yes":
 
         st.error(
-            "⚠️ Prediction: Oral Cancer Risk Detected"
+            "⚠️ Model Prediction: Higher Oral Cancer Risk Pattern Detected"
         )
+
 
     else:
 
         st.success(
-            "✅ Prediction: Lower Oral Cancer Risk Pattern"
+            "✅ Model Prediction: Lower Oral Cancer Risk Pattern"
         )
 
 
-    if probability is not None:
+
+    if hasattr(model, "predict_proba"):
+
+        probability = model.predict_proba(patient_encoded)[0]
 
         confidence = max(probability) * 100
 
+
         st.info(
-            f"Model confidence: {confidence:.1f}%"
+            f"Prediction confidence: {confidence:.1f}%"
         )
+
 
 
     st.warning(
         """
-        Important:
-        
-        This AI prediction is intended for research,
-        education, and demonstration purposes.
-        It does not replace clinical examination,
-        biopsy, imaging, or specialist assessment.
+        Clinical Reminder:
+
+        AI predictions should be interpreted alongside
+        clinical examination, patient history, imaging,
+        and histopathological confirmation.
         """
     )
 
 
-# ==============================
+
+# ============================================================
 # FOOTER
-# ==============================
+# ============================================================
+
 
 st.divider()
 
+
 st.caption(
-    "Developed for Oral Pathology AI Research | SCC Machine Learning Predictor"
+    "🧬 SCC AI Predictor | Oral Pathology Artificial Intelligence Research"
 )
