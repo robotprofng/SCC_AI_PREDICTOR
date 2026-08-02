@@ -423,5 +423,5 @@ st.divider()
 
 
 st.caption(
-    "🧬 SCC AI Predictor | Oral Pathology Artificial Intelligence Research"
+    "ORAL SCC AI PREDICTOR | DEVELOPED BY DR. AKINSHIPO & DR. UDEBUANA"
 )
