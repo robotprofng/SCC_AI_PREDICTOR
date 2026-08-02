@@ -27,10 +27,10 @@ label_encoder = joblib.load("label_encoder.pkl")
 # HEADER
 # ==============================
 
-st.title("🦷 SCC AI Predictor")
+st.title("🦷 SCC AI PREDICTOR TOOL")
 
 st.subheader(
-    "Artificial Intelligence for Oral Squamous Cell Carcinoma Risk Prediction"
+    "Artificial Intelligence Risk Prediction for Oral Squamous Cell Carcinoma Risk"
 )
 
 st.write(
